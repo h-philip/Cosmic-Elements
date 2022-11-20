@@ -32,7 +32,7 @@ public class ClickSound : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (canClick())
+        if (DownSound != null && canClick())
         {
             DownSound.Play();
             _isDown = true;
@@ -41,7 +41,7 @@ public class ClickSound : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (_isDown)
+        if (UpSound != null && _isDown)
         {
             UpSound.Play();
             _isDown = false;

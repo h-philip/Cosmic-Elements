@@ -636,7 +636,10 @@ public class SessionManager : MonoBehaviour
     [Serializable]
     public struct Settings
     {
+        public float MasterVolume;
         public float MusicVolume;
+        public float UIVolume;
+        public float IngameVolume;
     }
     public Settings LoadSettings()
     {
