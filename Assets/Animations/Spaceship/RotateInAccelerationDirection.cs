@@ -6,7 +6,7 @@ public class RotateInAccelerationDirection : MonoBehaviour
 {
     private Spaceship _spaceship;
     private Vector3 _acceleration;
-    private Components.Vector3 _accelerationD;
+    private Components.Vector3d _accelerationD;
     private Quaternion _rotation;
 
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class RotateInAccelerationDirection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _accelerationD = _spaceship.Thrust.normalized;
+        _accelerationD = _spaceship.Thrust.Normalized;
         _acceleration.x = (float)_accelerationD.x;
         _acceleration.y = (float)_accelerationD.y;
         _acceleration.z = (float)_accelerationD.z;

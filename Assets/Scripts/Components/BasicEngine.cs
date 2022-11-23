@@ -18,7 +18,7 @@ public class BasicEngine : Component, IEngine
 
     // IEngine
     public double Thrust => 1;
-    public Components.Vector3 CurrentThrust => _thrustDirection.normalized * _thrustPercentage * Thrust;
+    public Components.Vector3d CurrentThrust => _thrustDirection.Normalized * _thrustPercentage * Thrust;
     public double MaxEnergyConsumption => 10f;
 
     // Own
@@ -27,7 +27,7 @@ public class BasicEngine : Component, IEngine
     [SerializeField]
     private double _thrustPercentage = 0;
     [SerializeField]
-    private Components.Vector3 _thrustDirection;
+    private Components.Vector3d _thrustDirection;
     private string _shortDescription = @"TODO";
     private string _longDescription = @"TODO";
 
@@ -35,7 +35,7 @@ public class BasicEngine : Component, IEngine
     public BasicEngine(Spaceship spaceship) : base(spaceship)
     {
         if (_thrustDirection == null)
-            _thrustDirection = new Components.Vector3(0, 0, 0);
+            _thrustDirection = new Components.Vector3d(0, 0, 0);
         SetThrust(_thrustPercentage, _thrustDirection);
     }
 
@@ -50,7 +50,7 @@ public class BasicEngine : Component, IEngine
             Spaceship.SetThrust(this, null);
     }
 
-    public double SetThrust(double thrustFraction, Components.Vector3 thrustDirection)
+    public double SetThrust(double thrustFraction, Components.Vector3d thrustDirection)
     {
         thrustFraction = Math.Min(1, thrustFraction);
         thrustFraction = Math.Max(0, thrustFraction);

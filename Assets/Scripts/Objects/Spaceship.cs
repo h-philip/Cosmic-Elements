@@ -22,12 +22,7 @@ public class Spaceship : MonoBehaviour, ISpaceship
     /// Mass in kg
     /// </summary>
     public double Mass { get; private set; }
-
-    private Dictionary<IEngine, Components.Vector3> _perEngineThrusts = new Dictionary<IEngine, Components.Vector3>();
-    /// <summary>
-    /// Directed thrust in kN
-    /// </summary>
-    public Components.Vector3 Thrust { get; private set; } = new Components.Vector3(0,0,0);
+    public Vector3d Position;
     public IAddon[] Addons;
 
     private Component[] _components = new Component[0];
@@ -68,15 +63,21 @@ public class Spaceship : MonoBehaviour, ISpaceship
 
     public ControlScript Script = null;
 
-    private CelestialBody _celestialBody;
-    private Animator _animator;
-
+    private string _location;
     public virtual string Location
     {
         get
         {
+            if (_location != null)
+                return _location;
             // TODO
-            return "Orbit around " + GetComponent<CelestialBody>().Attractor.name;
+            // If in orbit -> "Orbiting ..."
+            // If flying from to -> "Flying to ..."
+            return "Far away...";
+        }
+        set
+        {
+            _location = value;
         }
     }
 
@@ -98,37 +99,7 @@ public class Spaceship : MonoBehaviour, ISpaceship
 
     public virtual bool IsControlStation => false;
 
-    public Components.Vector3 Position
-    {
-        get
-        {
-            try
-            {
-                SimpleKeplerOrbits.KeplerOrbitData data = GetComponent<CelestialBody>().KeplerOrbitData;
-                return new Components.Vector3(data.Position.x, data.Position.y, data.Position.z);
-            }
-            catch (NullReferenceException)
-            {
-                return new Components.Vector3(0, 0, 0);
-            }
-        }
-    }
-
-    public Components.Vector3 Velocity
-    {
-        get
-        {
-            try
-            {
-                SimpleKeplerOrbits.KeplerOrbitData data = GetComponent<CelestialBody>().KeplerOrbitData;
-                return new Components.Vector3(data.Velocity.x, data.Velocity.y, data.Velocity.z);
-            }
-            catch (NullReferenceException)
-            {
-                return new Components.Vector3(0, 0, 0);
-            }
-        }
-    }
+    public Vector3d Velocity { get; set; } // TODO
 
     protected void OnEnable()
     {
@@ -160,10 +131,6 @@ public class Spaceship : MonoBehaviour, ISpaceship
 
     protected void Start()
     {
-        _celestialBody = GetComponent<CelestialBody>();
-        _animator = GetComponent<Animator>();
-        if (_animator == null)
-            _animator = GetComponentInChildren<Animator>();
         Addons = GetComponents<IAddon>();
         if (Script != null)
             Script.Start();
@@ -202,7 +169,7 @@ public class Spaceship : MonoBehaviour, ISpaceship
         return realSpaceships.ToArray();
     }
 
-    public void SetThrust(IEngine engine, Components.Vector3 thrust)
+    public void SetThrust(IEngine engine, Components.Vector3d thrust)
     {
         if (thrust == null || (thrust.x == 0 && thrust.y == 0 && thrust.z == 0))
         {
@@ -213,15 +180,15 @@ public class Spaceship : MonoBehaviour, ISpaceship
         {
             _perEngineThrusts[engine] = thrust;
         }
-        Components.Vector3 newThrust = new Components.Vector3(0,0,0);
-        foreach (Components.Vector3 t in _perEngineThrusts.Values)
+        Components.Vector3d newThrust = new Components.Vector3d(0,0,0);
+        foreach (Components.Vector3d t in _perEngineThrusts.Values)
             newThrust += t;
         Thrust = newThrust;
 
         // Animation
         if (_animator != null)
         {
-            if (Thrust != null && Thrust.magnitude > 0)
+            if (Thrust != null && Thrust.Magnitude > 0)
                 _animator.SetBool("Accelerate", true);
             else
                 _animator.SetBool("Accelerate", false);

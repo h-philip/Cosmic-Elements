@@ -26,8 +26,8 @@ namespace ControlScripts
         }
 
         private bool IsInContract => Contracts.EcIntroduction.AnyRunning;
-        private Components.Vector3 TargetRelativeVelocity => _target.Velocity - _thisShip.Velocity;
-        private Components.Vector3 TargetRelativePosition => _target.Position - _thisShip.Position;
+        private Components.Vector3d TargetRelativeVelocity => _target.Velocity - _thisShip.Velocity;
+        private Components.Vector3d TargetRelativePosition => _target.Position - _thisShip.Position;
         private double MaxThrust { get { double max = 0; Array.ForEach(_engines, _ => max += _.Thrust); return max; } }
         private double MaxAcceleration => MaxThrust / Spaceship.Mass;
 
@@ -61,13 +61,13 @@ namespace ControlScripts
         {
             if (_target == null || !IsInContract)
                 return;
-            if (_moveMode == MoveMode.VelocityCancel && TargetRelativeVelocity.magnitude < 0.01)
+            if (_moveMode == MoveMode.VelocityCancel && TargetRelativeVelocity.Magnitude < 0.01)
                 _moveMode = MoveMode.PositionApproach;
-            else if (_moveMode == MoveMode.PositionApproach && TargetRelativePosition.magnitude < 3)
+            else if (_moveMode == MoveMode.PositionApproach && TargetRelativePosition.Magnitude < 3)
                 _moveMode = MoveMode.VelocityCancel;
-            _closestApproach = TargetRelativePosition.magnitude;
+            _closestApproach = TargetRelativePosition.Magnitude;
 
-            Components.Vector3 flyPath;
+            Components.Vector3d flyPath;
             if (_moveMode == MoveMode.VelocityCancel)
             {
                 flyPath = TargetRelativeVelocity;
@@ -77,14 +77,14 @@ namespace ControlScripts
                 flyPath = TargetRelativePosition;
             }
             double maxSpeedInDeltaTime = deltatime * MaxAcceleration;
-            double thrustFraction = flyPath.magnitude / maxSpeedInDeltaTime;
+            double thrustFraction = flyPath.Magnitude / maxSpeedInDeltaTime;
 
-            double breakTime = Math.Sqrt((2 * flyPath.magnitude) / MaxAcceleration);
-            bool accelerate = MaxAcceleration * breakTime > TargetRelativeVelocity.magnitude;
-            accelerate |= (TargetRelativePosition + TargetRelativeVelocity).magnitude > TargetRelativePosition.magnitude;
+            double breakTime = Math.Sqrt((2 * flyPath.Magnitude) / MaxAcceleration);
+            bool accelerate = MaxAcceleration * breakTime > TargetRelativeVelocity.Magnitude;
+            accelerate |= (TargetRelativePosition + TargetRelativeVelocity).Magnitude > TargetRelativePosition.Magnitude;
             //Debug.Log(accelerate + " - " + TargetRelativePosition.magnitude + " - " + _moveMode);
 
-            Components.Vector3 thrust;
+            Components.Vector3d thrust;
             if (accelerate)
                 thrust = flyPath;
             else
@@ -92,7 +92,7 @@ namespace ControlScripts
 
             _thisShip.Energy = 2000;
             Array.ForEach(_engines, engine => engine.SetThrust(thrustFraction, thrust));
-            if (TargetRelativePosition.magnitude <= 3 && TargetRelativeVelocity.magnitude < 1)
+            if (TargetRelativePosition.Magnitude <= 3 && TargetRelativeVelocity.Magnitude < 1)
                 TargetReached();
         }
 
@@ -122,7 +122,7 @@ namespace ControlScripts
                 _target = null;
                 Contracts.EcIntroduction.ShipIsBackHome = true;
             }
-            Array.ForEach(_engines, engine => engine.SetThrust(0, new Components.Vector3()));
+            Array.ForEach(_engines, engine => engine.SetThrust(0, new Components.Vector3d()));
         }
     }
 }

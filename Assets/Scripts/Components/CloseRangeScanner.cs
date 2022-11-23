@@ -59,7 +59,7 @@ public class CloseRangeScanner : Component, ICloseRangeScanner
         List<ICloseRangeScanner.ScanObject> result = new List<ICloseRangeScanner.ScanObject>();
         foreach (Spaceship spaceship in GameObject.FindObjectsOfType<Spaceship>())
         {
-            if (spaceship != Spaceship && (spaceship.Position - Spaceship.Position).magnitude < range)
+            if (spaceship != Spaceship && (spaceship.Position - Spaceship.Position).Magnitude < range)
                 result.Add(new ICloseRangeScanner.ScanObject(spaceship.Position - Spaceship.Position, spaceship.Velocity - Spaceship.Velocity, spaceship.IsControlStation));
         }
         // Subtract energy

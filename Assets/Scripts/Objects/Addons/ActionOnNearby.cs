@@ -40,7 +40,7 @@ public class ActionOnNearby : MonoBehaviour, IAddon
         // Get spaceships in range
         foreach (Spaceship spaceship in GameObject.FindObjectsOfType<Spaceship>())
         {
-            bool triggered = spaceship != _spaceship && (spaceship.Position - _spaceship.Position).magnitude < Range;
+            bool triggered = spaceship != _spaceship && (spaceship.Position - _spaceship.Position).Magnitude < Range;
             if (!TriggerOnNoComms)
                 triggered &= spaceship.CanCommunicate;
             if (!TriggerOnControlStation)

@@ -14,7 +14,7 @@ namespace Components
         public double RareMinerals { get; }
         public double Energy { get; }
         public double Mass { get; }
-        public Vector3 Thrust { get; }
+        public Vector3d Thrust { get; }
 
         public IComponent[] GetComponents();
         public T[] GetComponentsOfType<T>() where T : IComponent

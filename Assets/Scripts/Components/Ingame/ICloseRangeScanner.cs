@@ -27,10 +27,10 @@ namespace Components
 
         public struct ScanObject
         {
-            public Vector3 RelativePosition;
-            public Vector3 RelativeVelocity;
+            public Vector3d RelativePosition;
+            public Vector3d RelativeVelocity;
             public bool IsControlStation;
-            public ScanObject(Vector3 relPos, Vector3 relVel, bool isControlStation)
+            public ScanObject(Vector3d relPos, Vector3d relVel, bool isControlStation)
             {
                 RelativePosition = relPos;
                 RelativeVelocity = relVel;

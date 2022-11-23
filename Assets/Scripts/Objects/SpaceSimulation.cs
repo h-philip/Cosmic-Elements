@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Components;
 
 public class SpaceSimulation : MonoBehaviour
 {
@@ -54,11 +55,11 @@ public class SpaceSimulation : MonoBehaviour
             _referenceObject = value;
         }
     }
-    public SimpleKeplerOrbits.Vector3d TranslateVector
+    public Components.Vector3d TranslateVector
     {
         get
         {
-            return _referenceObject != null ? -_referenceObject.GetWorldPosition() : SimpleKeplerOrbits.Vector3d.zero;
+            return _referenceObject != null ? -_referenceObject.GetWorldPosition() : Vector3d.Zero;
         }
     }
 

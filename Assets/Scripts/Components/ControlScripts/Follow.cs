@@ -13,7 +13,7 @@ namespace ControlScripts
         private bool _targetFound = false;
         private double _time, _lastScan;
 
-        private double _distance => _target.RelativePosition.magnitude;
+        private double _distance => _target.RelativePosition.Magnitude;
 
         private const double MAX_RANGE = 2;
 
@@ -52,12 +52,12 @@ namespace ControlScripts
                 else
                     return;
             }
-            Vector3 thrust = null;
+            Vector3d thrust = null;
             //if (_target.RelativeVelocity.magnitude > 1)
             //    thrust += _target.RelativeVelocity;
             if (_distance > MAX_RANGE)
                 thrust = _target.RelativePosition;
-            else if (_target.RelativeVelocity.magnitude > 1)
+            else if (_target.RelativeVelocity.Magnitude > 1)
                 thrust = _target.RelativeVelocity;
             Array.ForEach(_engines, engine => engine.SetThrust(engine.Thrust, thrust));
         }
